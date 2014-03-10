@@ -1,0 +1,38 @@
+buildscript {
+  ext {
+    springBootVersion = "1.0.0.RC4"
+  }
+  repositories {
+    maven { url "http://repo.springsource.org/libs-milestone" }
+    mavenLocal()
+  }
+  dependencies {
+    classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+  }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'spring-boot'
+
+springBoot {
+  mainClass = 'groovboot.App'
+}
+
+jar {
+  baseName = 'groovboot'
+  version =  '1.0'
+}
+
+repositories {
+  mavenCentral()
+  maven { url "http://repo.springsource.org/libs-milestone" }
+}
+
+dependencies {
+  compile 'org.codehaus.groovy:groovy-all:2.2.0'
+  compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+  compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+  testCompile "org.springframework.boot:spring-boot-starter-test:${springBootVersion}"
+  //compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
+  testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+}
