@@ -1,8 +1,8 @@
 buildscript {
   ext {
     springBootVersion = "1.0.0.RC4"
-	stanfordCoreNLPVersion = "3.3.1"
-	log4jVersion = "1.2.17"
+    stanfordCoreNLPVersion = "3.3.1"
+    log4jVersion = "1.2.17"
   }
   repositories {
     maven { url "http://repo.springsource.org/libs-milestone" }
