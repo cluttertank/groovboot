@@ -21,52 +21,52 @@ import org.springframework.scheduling.annotation.AsyncResult
 @Service
 class NLP {
 
-  Log log = LogFactory.getLog(NLP.class)
+	Log log = LogFactory.getLog(NLP.class)
 
-  private Annotation document
+	private Annotation document
 
-  /**
-   * sets up the pipeline and parses internal document.
-   * @param question
-   */
-  private void parse(String text){
-    //setup pipeline, directly from StanfordNLP documentation
-    Properties props = new Properties()
-    props.put "annotators", "tokenize, ssplit"
-    StanfordCoreNLP pipeline = new StanfordCoreNLP(props)
+	/**
+	 * sets up the pipeline and parses internal document.
+	 * @param question
+	 */
+	private void parse(String text){
+		//setup pipeline, directly from StanfordNLP documentation
+		Properties props = new Properties()
+		props.put "annotators", "tokenize, ssplit"
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(props)
 
-    //wrap question in an Annotation instance (required by CoreNLP), and run it through the pipeline
-    document = new Annotation(text)
-    pipeline.annotate document
-  }
+		//wrap question in an Annotation instance (required by CoreNLP), and run it through the pipeline
+		document = new Annotation(text)
+		pipeline.annotate document
+	}
 
-  /**
-   * return all tokens of a parsed text
-   * @return all tokens
-   */
-  Future<List> getTokens(String text) {
+	/**
+	 * return all tokens of a parsed text
+	 * @return all tokens
+	 */
+	Future<List> getTokens(String text) {
 
-    parse(text)
+		parse(text)
 
-    List<CoreMap> sentences = document?.get(SentencesAnnotation)
-    def result = []
+		List<CoreMap> sentences = document?.get(SentencesAnnotation)
+		def result = []
 
-    log.info "pre parsed entry: $document"
+		log.info "pre parsed entry: $document"
 
-    // nested loop through to add all tokens from all sentences of the input to the new list
-    sentences.each {  CoreMap sentence ->
-      sentence.get(TokensAnnotation).each {  CoreLabel token ->
-        result.push(token.get(TextAnnotation))
-      }
-    }
+		// nested loop through to add all tokens from all sentences of the input to the new list
+		sentences.each {  CoreMap sentence ->
+			sentence.get(TokensAnnotation).each {  CoreLabel token ->
+				result.push(token.get(TextAnnotation))
+			}
+		}
 
-    log.info "resulting token list: ${result.toListString()}"
+		log.info "resulting token list: ${result.toListString()}"
 
-    //put the result of the tokenization into an answer for now
-    Answer answer = new Answer(title: "tokens", text: result.toListString())
-    //return list of one answer, also just for now as we expect to expand this class later anyway this will be rewritten
-    new AsyncResult<>([answer])
+		//put the result of the tokenization into an answer for now
+		Answer answer = new Answer(title: "tokens", text: result.toListString())
+		//return list of one answer, also just for now as we expect to expand this class later anyway this will be rewritten
+		new AsyncResult<>([answer])
 
-  }
+	}
 
 }
