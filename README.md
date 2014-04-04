@@ -4,7 +4,7 @@ groovboot is a simple web app using Groovy and AngularJS for REST APIs powered b
 
 ## 1. Required installs
 
-* Java 6 and higher
+* Java 8
 * Git
 
 ## 2. Build test run
