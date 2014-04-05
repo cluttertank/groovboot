@@ -5,8 +5,8 @@ buildscript {
     log4jVersion = "1.2.17"
   }
   repositories {
-    mavenCentral()
     mavenLocal()
+    mavenCentral()
   }
   dependencies {
     classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
@@ -37,8 +37,12 @@ configurations.all {
   }
 }
 
+tasks.withType(GroovyCompile) {
+  groovyOptions.optimizationOptions.indy = true
+}
+
 dependencies {
-  compile 'org.codehaus.groovy:groovy-all:2.2.0'
+  compile 'org.codehaus.groovy:groovy-all:2.3.0-beta-1:indy'
   compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
   compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
   compile "edu.stanford.nlp:stanford-corenlp:${stanfordCoreNLPVersion}"
